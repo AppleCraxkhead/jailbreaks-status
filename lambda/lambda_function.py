@@ -17,13 +17,11 @@ logger.setLevel(logging.INFO)
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
 
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        speak_output = "Welcome to jailbreaks dot app. please say status to hear the status of jailbreaks dot app"
+        speak_output = "Welcome to jailbreaks dot app. please say status to hear the status of jailbreaks dot app" # First prompt after opening the skill
 
         return (
             handler_input.response_builder
@@ -33,17 +31,15 @@ class LaunchRequestHandler(AbstractRequestHandler):
         )
 
 
-class HelloWorldIntentHandler(AbstractRequestHandler):
+class HelloWorldIntentHandler(AbstractRequestHandler): # I left it helloworld because it works. Get over it. 
     """Handler for Hello World Intent."""
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        url = "https://jailbreaks.app/status.php"
+        url = "https://jailbreaks.app/status.php" # API
         response = requests.get(url)
-        if "Signed" in response.text:
+        if "Signed" in response.text: #If it works it works
             speak_output = "Jailbreaks dot app is currently signed"
         else :
             speak_output = "jailbreaks dot app is currently not signed"
@@ -51,15 +47,13 @@ class HelloWorldIntentHandler(AbstractRequestHandler):
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
         )
 
 
-class HelpIntentHandler(AbstractRequestHandler):
+class HelpIntentHandler(AbstractRequestHandler): # If they need help with this its just natual selection at this point. But I included it nonetheless.
     """Handler for Help Intent."""
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
 
     def handle(self, handler_input):
@@ -100,8 +94,8 @@ class FallbackIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In FallbackIntentHandler")
-        speech = "Hmm, I'm not sure. You can say Hello or Help. What would you like to do?"
-        reprompt = "I didn't catch that. What can I help you with?"
+        speech = "Hmm, I'm not sure. You can say Hello or Help. What would you like to do?" # Alexa do be deaf asf tho
+        reprompt = "I didn't catch that. What can I help you with?" # Damn she still can't hear you?
 
         return handler_input.response_builder.speak(speech).ask(reprompt).response
 
@@ -114,11 +108,10 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        # Any cleanup logic goes here.
 
         return handler_input.response_builder.response
 
-
+#--------------------------Unessesary crap below this line -----------------------------
 class IntentReflectorHandler(AbstractRequestHandler):
     """The intent reflector is used for interaction model testing and debugging.
     It will simply repeat the intent the user said. You can create custom handlers
@@ -137,11 +130,10 @@ class IntentReflectorHandler(AbstractRequestHandler):
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
         )
 
-
+#--------------------Ok this one is a little necessary-----------------
 class CatchAllExceptionHandler(AbstractExceptionHandler):
     """Generic error handling to capture any syntax or routing errors. If you receive an error
     stating the request handler chain is not found, you have not implemented a handler for
@@ -164,11 +156,8 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
                 .response
         )
 
-# The SkillBuilder object acts as the entry point for your skill, routing all request and response
-# payloads to the handlers above. Make sure any new handlers or interceptors you've
-# defined are included below. The order matters - they're processed top to bottom.
 
-
+#--------------------Same with this one but other than that its useless--------------------
 sb = SkillBuilder()
 
 sb.add_request_handler(LaunchRequestHandler())
@@ -177,7 +166,7 @@ sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+sb.add_request_handler(IntentReflectorHandler()) 
 
 sb.add_exception_handler(CatchAllExceptionHandler())
 
