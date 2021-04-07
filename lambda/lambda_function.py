@@ -40,6 +40,7 @@ class HelloWorldIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
 
     def handle(self, handler_input):
+        #Raven did this part
         # type: (HandlerInput) -> Response
         url = "https://jailbreaks.app/status.php"
         response = requests.get(url)
